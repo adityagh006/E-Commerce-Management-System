@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Update Product</h2>
+    <form action="/update_product/{{ product.id }}" method="POST" enctype="multipart/form-data">
+        <!-- Product Name -->
+        <div class="form-group">
+            <label for="name">Product Name</label>
+            <input type="text" name="name" class="form-control" value="{{ product.name }}" required>
+        </div>
+
+        <!-- Product Price -->
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" name="price" class="form-control" value="{{ product.price }}" required>
+        </div>
+
+        <!-- Product Description -->
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="description" class="form-control" rows="3" required>{{ product.description }}</textarea>
+        </div>
+
+        <!-- Category Selection -->
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select name="category" class="form-control">
+                {% for category in categories %}
+                <option value="{{ category.category_id }}" {% if category.category_id == product.category_id %}selected{% endif %}>
+                    {{ category.category_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Option to Add New Category -->
+        <div class="form-group">
+            <label for="new_category">Or Add New Category</label>
+            <input type="text" name="new_category" class="form-control" placeholder="New Category">
+        </div>
+
+        <!-- Product Image -->
+        <div class="form-group">
+            <label for="image">Product Image</label>
+            <input type="file" name="image" class="form-control">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

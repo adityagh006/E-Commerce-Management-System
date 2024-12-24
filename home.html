@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Welcome to Our Store!</h1>
+
+    <!-- Display the "Add Product" button if the user is a seller -->
+    {% if session.role == 'seller' %}
+    <div class="text-center mb-4">
+        <a href="/upload_product" class="btn btn-success btn-lg">Add Product</a>
+    </div>
+    {% endif %}
+
+    <!-- Explore Categories Section -->
+    <div class="mb-4">
+        <div class="d-flex justify-content-center flex-wrap">
+            {% for category in categories %}
+            <div class="category-item d-flex align-items-center mb-2 mx-2">
+                <a href="/category/{{ category.category_id }}" class="btn btn-outline-secondary me-2">
+                    {{ category.category_name }}
+                </a>
+                
+                <!-- Display delete button if the user is a seller -->
+                {% if session.role == 'seller' %}
+                <form action="/delete_category/{{ category.category_id }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm ms-2">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h2 class="text-center">Products</h2>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-light rounded">
+                <!-- Image of the product -->
+                <img src="/image/{{product.id}}" class="card-img-top" alt="{{ product.name }}">
+                
+                <div class="card-body">
+                    <!-- Product name and price -->
+                    <h5 class="card-title font-weight-bold">{{ product.name }}</h5>
+                    <p class="card-text text-muted">$ {{ product.price }}</p>
+                    <p class="card-text">{{ product.category_id }}</p>
+                    <!-- Product description -->
+                    <p class="card-text">{{ product.description }}</p>
+                    
+                    <!-- Form to add product to cart -->
+                    <form action="/add_to_cart/{{ product.id }}" method="POST" class="d-flex align-items-center mb-2">
+                        <input type="number" name="quantity" min="1" value="1" required class="form-control me-2" style="width: 70px;">
+                        <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    </form>
+                    
+                    <!-- Update button for sellers -->
+                    {% if session.role == 'seller' %}
+                    <div class="text-center">
+                        <a href="/update_product/{{ product.id }}" class="btn btn-warning btn-sm">Update</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
