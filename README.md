@@ -145,7 +145,7 @@ python app.py
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
 
-##Acknowledgments
+## Acknowledgments
 - Flask documentation and community
 - Bootstrap team for the frontend framework
 - MySQL community
